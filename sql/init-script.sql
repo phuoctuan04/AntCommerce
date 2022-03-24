@@ -24,6 +24,8 @@ BEGIN
 	)
 END
 
+TRUNCATE TABLE dbo.Products
+
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP013', 'iPhone 13 ProMax', 'Nice', 130000)
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP014', 'iPhone 13 ProMax', 'Nice', 130000)
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP015', 'iPhone 13 ProMax', 'Nice', 130000)
@@ -36,4 +38,3 @@ INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP021', 'iPhone 
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP022', 'iPhone 13 ProMax', 'Nice', 180000)
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP023', 'iPhone 13 ProMax', 'Nice', 200000)
 INSERT INTO dbo.Products(SKU, Name, Description, Price) VALUES('IP024', 'Samsung Galaxy', 'Nice', 200000)
--- select * from dbo.Products

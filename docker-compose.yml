@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1434"
+    networks:
+      - ant-network
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "123@Abc#@"
+      MSSQL_PID: Express
+    volumes:
+      - sqlserver:/var/opt/mssql
+      - ./sql:/opt/script
+    #command: /opt/script/init.sh
+  product_api:
+    build:
+      dockerfile: Dockerfile
+    image: product_api
+    container_name: product_api
+    depends_on:
+      - sqlserver
+    ports:
+    - "5000:5000"
+    networks:
+      - ant-network
+
+networks:
+  ant-network:
+    driver: bridge
+volumes:
+  sqlserver:
+    driver: local
+    

@@ -1,10 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="10.0.1" />
 		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
@@ -20,8 +21,8 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.3.0" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\Modules\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj" />
-	  <ProjectReference Include="..\Modules\AntCommerce.Module.Modular\AntCommerce.Module.Modular.csproj" />
-	  <ProjectReference Include="..\Modules\AntCommerce.Module.Product\AntCommerce.Module.Product.csproj" />
+		<ProjectReference Include="..\Modules\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj" />
+		<ProjectReference Include="..\Modules\AntCommerce.Module.Modular\AntCommerce.Module.Modular.csproj" />
+		<ProjectReference Include="..\Modules\AntCommerce.Module.Product\AntCommerce.Module.Product.csproj" />
 	</ItemGroup>
 </Project>

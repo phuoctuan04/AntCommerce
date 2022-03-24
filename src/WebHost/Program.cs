@@ -63,6 +63,16 @@ if (app.Environment.IsDevelopment())
         .WriteTo.Console()
         .CreateLogger();
 }
+if (app.Environment.IsProduction())
+{
+    Log.Logger = new LoggerConfiguration()
+        .MinimumLevel.Warning()
+        .Enrich.FromLogContext()
+        .Enrich.WithExceptionDetails()
+        .Enrich.WithMachineName()
+        .WriteTo.Console()
+        .CreateLogger();
+}
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

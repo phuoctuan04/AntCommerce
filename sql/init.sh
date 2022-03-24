@@ -1,0 +1,1 @@
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 123@Abc#@ -d master -i /opt/script/init-script.sql

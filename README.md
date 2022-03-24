@@ -26,9 +26,16 @@ The simple commerce with .NET Core.
 - MediatR
 - FluentValidation
 - CQRS
-- Unit tests (xUnit, NSubstitute, FakeItEasy)
+- Unit tests (xUnit, NSubstitute, MockQueryable)
+- Dockerfile
 
 ## Steps to run
+Using Docker
+> docker-compose up
+
+Init Database
+> docker exec -it  sqlserver  bash  /opt/script/init.sh
+
 Using git clone
 
 > git@github.com:tuanitpro/AntCommerce.git
@@ -39,7 +46,8 @@ Using git clone
 
 > cd WebHost > dotnet run
 
-
+Open browser then Enter 
+> http://localhost:5000
 # Output result
 
 ![Swagger UI](docs/images/Screenshot_4.png)
