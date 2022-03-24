@@ -30,7 +30,8 @@ jobs:
         working-directory: src
         run: dotnet restore
       - name: Build
-        run: dotnet build WebHost --configuration Release --no-restore
+        working-directory: src/WebHost
+        run: dotnet build --configuration Release --no-restore
       - name: Test
         working-directory: src
         run: dotnet test AntSolution.sln --no-restore --verbosity normal
