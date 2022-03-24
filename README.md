@@ -1,6 +1,9 @@
 # Ant Commerce
 The simple commerce with .NET Core.
 
+### Build status
+[![Build](https://github.com/tuanitpro/AntCommerce/actions/workflows/build.yml/badge.svg)](https://github.com/tuanitpro/AntCommerce/actions/workflows/build.yml)
+
 # High level architecture
 
 ![Swagger UI](docs/images/modular-architecture.png)
