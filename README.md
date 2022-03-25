@@ -47,7 +47,7 @@ Using git clone
 > cd WebHost > dotnet run
 
 Open browser then Enter 
-> http://localhost:5000
+> http://localhost:5001
 
 ## Demo
 > https://product-api.tuanitpro.com

@@ -17,7 +17,7 @@ namespace AntCommerce.Module.Product.Contexts
                 entity.HasKey(x => x.Id);
                 entity.Property(x => x.SKU).IsRequired();
                 entity.Property(x => x.Name).IsRequired();
-                entity.Property(x => x.Price).HasPrecision(18);
+                entity.Property(x => x.Price).HasColumnType("decimal(18,4)");
             });
 
             base.OnModelCreating(modelBuilder);

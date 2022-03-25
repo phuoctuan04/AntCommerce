@@ -2,9 +2,9 @@
 {
     public class PagingResult<T> where T : class
     {
-        public List<T> Data { get; set; }
+        public List<T>? Data { get; set; }
 
-        public MetaData MetaData { get; set; }
+        public MetaData? MetaData { get; set; }
     }
 
     public class MetaData

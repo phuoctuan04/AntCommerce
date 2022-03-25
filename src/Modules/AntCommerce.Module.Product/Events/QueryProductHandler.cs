@@ -4,7 +4,6 @@
     using AntCommerce.Module.Product.Commands;
     using AntCommerce.Module.Product.DTOs;
     using AntCommerce.Module.Product.Services;
-    using AutoMapper;
     using MediatR;
 
     public class QueryProductHandler : IRequestHandler<QueryProductCommand, PagingResult<ProductModel>>
