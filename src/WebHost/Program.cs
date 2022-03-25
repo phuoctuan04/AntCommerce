@@ -11,7 +11,7 @@ using WebHost.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel((context, options) =>
+builder.WebHost.UseKestrel().ConfigureKestrel((context, options) =>
 {
     options.Listen(IPAddress.Any, 5000, listenOptions =>
     {

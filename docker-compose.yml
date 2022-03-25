@@ -9,7 +9,7 @@ services:
     networks:
       - ant-network
     environment:
-      ACCEPT_EULA: "Y"
+      ACCEPT_EULA: "--accept-eula"
       SA_PASSWORD: "123@Abc#@"
       MSSQL_PID: Express
     volumes:
@@ -19,7 +19,7 @@ services:
   product_api:
     build:
       dockerfile: Dockerfile
-    image: product_api
+    image: tuanitpro/product_api
     container_name: product_api
     depends_on:
       - sqlserver
