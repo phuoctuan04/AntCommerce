@@ -23,9 +23,7 @@ jobs:
           targetType: 'inline'
           script: |
             # Write your commands here
-            $files=$(git diff HEAD HEAD~ --name-only)
-            $temp=$files -split ' '
-            $count=$temp.Length
+            git log -m -1 --name-only
             echo 'Hello world'
   - job: build
     displayName: Build
