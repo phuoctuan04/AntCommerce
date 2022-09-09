@@ -6,38 +6,55 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'ubuntu-latest'
+jobs: 
+  - job: check
+    displayName: Check changed files
+    pool: Azure CICD
+    steps:
+      - task: ChangedFiles@1
+        name: CheckChanges
+        inputs:
+          refBranch: main
+          verbose: true
+          rules: |
+            [CodeChanged]
+            src/**
 
-steps:
-  - script: echo Hello, world!
-    displayName: 'Run a one-line script'
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk'
-    inputs:
-      packageType: 'sdk'
-      version: '6.0.100'
-  - script: dotnet build --configuration Release --no-restore
-    workingDirectory: 'src/WebHost'
-    displayName: 'dotnet build'
-  - task: DotNetCoreCLI@2
-    displayName: 'run tests'
-    inputs:
-      command: test
-      arguments:  '--logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude=[xunit.*]*%2c[System.*]*'
-      projects: 'tests/**/*.csproj'
-      nobuild: true
-  - task: DotNetCoreCLI@2
-    displayName: Install ReportGenerator tool
-    inputs:
-      command: custom
-      custom: tool
-      arguments: install --tool-path . dotnet-reportgenerator-globaltool
+            [TestsChanged]
+            tests/**
 
-  - script: ./reportgenerator "-reports:$(Build.SourcesDirectory)/test/**/coverage.cobertura.xml" "-targetdir:$(Build.SourcesDirectory)/coverlet/reports" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
-    displayName: Create reports
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Publish code coverage'
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml  
+  - job: build
+    displayName: Build
+    dependsOn: check
+    condition: eq(dependencies.check.outputs['CheckChanges.CodeChanged'], 'true')
+    pool: Azure CICD
+    steps:
+      - task: UseDotNet@2
+        displayName: Install .NET
+        inputs:
+          packageType: 'sdk'
+          version: '6.x'
+      - script: dotnet build src/AntSolution.sln
+        displayName: 'Build'
+      
+  - job: test
+    displayName: Tests
+    dependsOn: check
+    condition: or(eq(dependencies.check.outputs['CheckChanges.CodeChanged'], 'true'), eq(dependencies.check.outputs['CheckChanges.TestsChanged'], 'true'))
+    pool: Azure CICD
+    steps:
+      - task: UseDotNet@2
+        displayName: Install .NET
+        inputs:
+          packageType: 'sdk'
+          version: '6.x'
+      - script: dotnet test src/AntSolution.sln
+        displayName: 'Tests'
+  
+  - job: deploy
+    displayName: Deploy
+    dependsOn: [build, test]
+    pool: Azure CICD
+    steps:
+      - script: echo 'Deploy'
+        displayName: Deploy
