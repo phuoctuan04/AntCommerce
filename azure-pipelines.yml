@@ -10,6 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  - script: echo Hello, world!
+    displayName: 'Run a one-line script'
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk'
     inputs:
