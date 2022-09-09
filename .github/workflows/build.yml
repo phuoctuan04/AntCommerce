@@ -42,9 +42,6 @@ jobs:
         working-directory: src/WebHost
         if: steps.changes.outputs.src == 'true'
         run: dotnet build --configuration Release --no-restore
-      - name: Test
-        working-directory: src
-        run: dotnet test AntSolution.sln --no-restore --verbosity normal
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1.2.0
@@ -66,3 +63,27 @@ jobs:
       #   with:
       #     push: true
       #     tags: tuanitpro/product_api:latest
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ['6.0.x']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          working-directory: 'tests'
+          filters: |
+            src:
+              - 'tests/**'
+      - name: Test
+        working-directory: src
+        if: steps.changes.outputs.src == 'true'
+        run: dotnet test AntSolution.sln --no-restore --verbosity normal
+      
+    
