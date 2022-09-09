@@ -59,3 +59,12 @@ jobs:
     steps:
       - script: echo 'Deploy'
         displayName: Deploy
+      
+      - task: Docker@2
+        displayName: Build and Push
+        inputs:
+          command: buildAndPush
+          repository: tuanitpro/product_api
+          tags: |
+            latest
+            tag2
