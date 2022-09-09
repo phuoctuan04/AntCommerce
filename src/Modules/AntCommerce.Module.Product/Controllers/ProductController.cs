@@ -66,7 +66,7 @@
             {
                 return new ObjectResult(StatusCodes.Status408RequestTimeout);
             }
-
+            // TODO
             var result = await _mediator.Send(new QueryProductCommand() { Model = model }, cancellationToken);
             return Ok(result);
         }
