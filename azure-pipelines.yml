@@ -9,26 +9,33 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
 steps:
-- task: NuGetToolInstaller@1
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: 'sdk'
+      version: '6.0.100'
+  - script: dotnet build --configuration Release --no-restore
+    workingDirectory: 'src/WebHost'
+    displayName: 'dotnet build'
+  - task: DotNetCoreCLI@2
+    displayName: 'run tests'
+    inputs:
+      command: test
+      arguments:  '--logger trx /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Exclude=[xunit.*]*%2c[System.*]*'
+      projects: 'tests/**/*.csproj'
+      nobuild: true
+  - task: DotNetCoreCLI@2
+    displayName: Install ReportGenerator tool
+    inputs:
+      command: custom
+      custom: tool
+      arguments: install --tool-path . dotnet-reportgenerator-globaltool
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: DotNetCoreCLI@2
-  displayName: Build 
-  inputs:
-    command: 'build'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/src'
-
-- task: VSTest@2
-  displayName: Tests 
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - script: ./reportgenerator "-reports:$(Build.SourcesDirectory)/test/**/coverage.cobertura.xml" "-targetdir:$(Build.SourcesDirectory)/coverlet/reports" "-reporttypes:HtmlInline_AzurePipelines;Cobertura"
+    displayName: Create reports
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml  
