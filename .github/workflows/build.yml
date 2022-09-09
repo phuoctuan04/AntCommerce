@@ -26,11 +26,21 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          working-directory: 'src'
+          filters: |
+            src:
+              - 'src/**'
       - name: Install dependencies
         working-directory: src
+        if: steps.changes.outputs.src == 'true'
         run: dotnet restore
+      
       - name: Build
         working-directory: src/WebHost
+        if: steps.changes.outputs.src == 'true'
         run: dotnet build --configuration Release --no-restore
       - name: Test
         working-directory: src
