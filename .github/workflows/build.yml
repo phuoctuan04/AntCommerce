@@ -42,27 +42,6 @@ jobs:
         working-directory: src/WebHost
         if: steps.changes.outputs.src == 'true'
         run: dotnet build --configuration Release --no-restore
-        
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1.2.0
-       
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.6.0
-        
-      # - name: Login to DockerHub
-      #   uses: docker/login-action@v1.14.1
-      #   env:
-      #     DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      #   with:
-      #     username: "$DOCKERHUB_USERNAME"
-      #     password: "$DOCKERHUB_TOKEN"
-
-      # - name: Build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     tags: tuanitpro/product_api:latest
   tests:
     runs-on: ubuntu-latest
     strategy:
@@ -81,9 +60,47 @@ jobs:
           filters: |
             src:
               - 'tests/**'
-      - name: Test
+      - name: Tests
         working-directory: src
         if: steps.changes.outputs.src == 'true'
         run: dotnet test AntSolution.sln --no-restore --verbosity normal
       
-    
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, tests]
+    strategy:
+      matrix:
+        dotnet-version: ['6.0.x']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          working-directory: 'src'
+          filters: |
+            src:
+              - 'src/**'
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: tuanitpro/product_api:latest
+      
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
