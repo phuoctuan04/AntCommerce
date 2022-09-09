@@ -14,47 +14,16 @@ jobs:
       - task: ChangedFiles@1
         name: CheckChanges
         inputs:
-          refBranch: main
           verbose: true
-          rules: |
-            [CodeChanged]
-            src/**
-
-            [TestsChanged]
-            tests/**
-
+          variable: CodeChanged
+          rules: src/**
+ 
   - job: build
     displayName: Build
     dependsOn: check
     condition: eq(dependencies.check.outputs['CheckChanges.CodeChanged'], 'true')
     pool: Azure CICD
     steps:
-      - task: UseDotNet@2
-        displayName: Install .NET
-        inputs:
-          packageType: 'sdk'
-          version: '6.x'
-      - script: dotnet build src/AntSolution.sln
+      - script:  git log -m -1 --name-only
         displayName: 'Build'
       
-  - job: test
-    displayName: Tests
-    dependsOn: check
-    condition: or(eq(dependencies.check.outputs['CheckChanges.CodeChanged'], 'true'), eq(dependencies.check.outputs['CheckChanges.TestsChanged'], 'true'))
-    pool: Azure CICD
-    steps:
-      - task: UseDotNet@2
-        displayName: Install .NET
-        inputs:
-          packageType: 'sdk'
-          version: '6.x'
-      - script: dotnet test src/AntSolution.sln
-        displayName: 'Tests'
-  
-  - job: deploy
-    displayName: Deploy
-    dependsOn: [build, test]
-    pool: Azure CICD
-    steps:
-      - script: echo 'Deploy'
-        displayName: Deploy
