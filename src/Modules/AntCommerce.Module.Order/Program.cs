@@ -42,7 +42,7 @@ builder.Services.AddRateLimiter(options =>
                 Window = TimeSpan.FromMinutes(1)
             }));
 });
-
+builder.Services.AddProblemDetails();
 // Configure logging
 // https://www.meziantou.net/monitoring-a-dotnet-application-using-opentelemetry.htm
 
@@ -70,8 +70,9 @@ var app = builder.Build();
 //                 .WriteTo.Seq("http://localhost:5341", Serilog.Events.LogEventLevel.Information)
 //                 .CreateLogger();
 
-app.UseResponseCompression();
 app.UseRouting();
+app.UseResponseCompression();
+app.UseExceptionHandler();
 app.UseRateLimiter();
 app.MapControllers();
 app.UseSwaggerUICustom();
