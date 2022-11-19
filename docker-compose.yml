@@ -5,7 +5,7 @@ services:
     container_name: sqlserver
     image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
-      - "1433:1434"
+      - 1433:1434
     networks:
       - ant-network
     environment:
@@ -16,6 +16,43 @@ services:
       - sqlserver:/var/opt/mssql
       - ./sql:/opt/script
     #command: /opt/script/init.sh
+  seq:
+    image: 'datalust/seq'
+    restart: always
+    ports:
+      - 8090:80
+      - 5341:5341
+    volumes:
+      - 'seq:/data'
+    environment:
+      - ACCEPT_EULA=Y
+    networks:
+      - ant-network
+
+  redis:
+    image: 'redis:alpine'
+    command: 'redis-server'
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - 'redis:/var/lib/redis'
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - ant-network
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/
+      - rabbitmq:/var/log/rabbitmq
+    networks:
+      - ant-network
   product_api:
     build:
       dockerfile: Dockerfile
@@ -27,11 +64,29 @@ services:
     - "5001:5001"
     networks:
       - ant-network
+  order_api:
+    build:
+      context: .
+      dockerfile: src/Modules/AntCommerce.Module.Order/Dockerfile
+    image: tuanitpro/order_api
+    container_name: order_api
+    depends_on:
+      - sqlserver
+    ports:
+    - "5002:5002"
+    networks:
+      - ant-network
 
 networks:
   ant-network:
     driver: bridge
 volumes:
   sqlserver:
+    driver: local
+  seq:
+    driver: local
+  redis:
+    driver: local
+  rabbitmq:
     driver: local
     

@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
+using System.Threading.RateLimiting;
 using AntCommerce.Module.Modular.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -50,6 +51,21 @@ services.AddModuleConfigure(configuration);
 services.AddHealthChecks();
 services.AddCustomSwaggerGen();
 services.AddLogging();
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = 429;
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name ?? httpContext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 10,
+                QueueLimit = 0,
+                Window = TimeSpan.FromMinutes(1)
+            }));
+});
+
 var app = builder.Build();
 app.UseResponseCompression();
 
@@ -74,6 +90,7 @@ if (app.Environment.IsProduction())
         .CreateLogger();
 }
 app.UseRouting();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCookiePolicy();
