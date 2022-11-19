@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace AntCommerce.Module.Order.Controllers
@@ -18,16 +18,15 @@ namespace AntCommerce.Module.Order.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         
         public OrderController( ILogger<OrderController> logger, 
-         IHttpContextAccessor httpContextAccessor) {
-_logger = logger;
-_httpContextAccessor = httpContextAccessor;
+            IHttpContextAccessor httpContextAccessor) {
+            _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
- [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             _logger.LogInformation("Get all data");
-            // var data = await _productQueryService.FindAllAsync();
             return Ok("data");
         }
 

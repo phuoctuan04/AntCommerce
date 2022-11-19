@@ -55,8 +55,9 @@ builder.Logging.AddOpenTelemetry(builder =>
     // builder.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317"));
 });
 
-builder.Host.UseSerilog((ctx, lc) 
-    => lc.ReadFrom.Configuration(ctx.Configuration));
+builder.Host.UseSerilog((context, loggerConfig) 
+    => loggerConfig.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // builder.Host.UseSerilog();
