@@ -5,6 +5,6 @@
 
     public class EditProductCommand : IRequest<ProductModel>
     {
-        public ProductModel Model { get; set; }
+        public ProductModel? Model { get; set; }
     }
 }

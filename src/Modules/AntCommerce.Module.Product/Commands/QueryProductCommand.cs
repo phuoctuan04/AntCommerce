@@ -6,6 +6,6 @@
 
     public class QueryProductCommand : IRequest<PagingResult<ProductModel>>
     {
-        public ProductQueryModel Model { get; set; }
+        public ProductQueryModel? Model { get; set; }
     }
 }

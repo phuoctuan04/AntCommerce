@@ -28,12 +28,12 @@ builder.WebHost.UseKestrel().ConfigureKestrel((context, options) =>
 
 builder.Services.AddProblemDetails();
 
-var services = builder.Services;
+// var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-var connection = builder.Configuration["ConnectionStrings:ProductDbContext"];
-services.AddDbContextPool<ProductDbContext>(options =>
+builder.Services.AddDbContextPool<ProductDbContext>(options =>
 {
-    options.UseSqlServer(connection,
+    options.UseSqlServer(connectionString,
         sqlServerOptionsAction: sqlOptions =>
         {
 
@@ -45,36 +45,40 @@ services.AddDbContextPool<ProductDbContext>(options =>
     // Default in EF Core would be to log a warning when client evaluation is performed.
     //Check Client vs. Server evaluation: https://docs.microsoft.com/en-us/ef/core/querying/client-eval
 });
+builder.Services.AddStackExchangeRedisCache(options =>
+ {
+     options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+     options.InstanceName = "ProductCacheInstance";
+ });
+builder.Services.AddTransient<IProductQueryService, ProductQueryService>();
+builder.Services.AddTransient<IProductCommandService, ProductCommandService>();
+builder.Services.AddMediatR(typeof(QueryProductHandler));
+builder.Services.AddMediatR(typeof(CreateProductHandler));
+builder.Services.AddMediatR(typeof(EditProductHandler));
 
-services.AddTransient<IProductQueryService, ProductQueryService>();
-services.AddTransient<IProductCommandService, ProductCommandService>();
-services.AddMediatR(typeof(QueryProductHandler));
-services.AddMediatR(typeof(CreateProductHandler));
-services.AddMediatR(typeof(EditProductHandler));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddResponseCompression();
 
-services.AddHttpContextAccessor();
-services.AddResponseCompression();
-
-services.AddResponseCompression(options =>
+builder.Services.AddResponseCompression(options =>
 {
     options.Providers.Add<BrotliCompressionProvider>();
     options.Providers.Add<GzipCompressionProvider>();
 });
-services.Configure<GzipCompressionProviderOptions>(options =>
+builder.Services.Configure<GzipCompressionProviderOptions>(options =>
 {
     options.Level = CompressionLevel.Fastest;
 });
-services.AddMediatR(Assembly.GetExecutingAssembly());
-services.AddControllers().AddJsonOptions(options =>
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
     options.JsonSerializerOptions.DictionaryKeyPolicy = null;
 });
 
-services.AddHealthChecks();
-services.AddCustomSwaggerGen();
-services.AddLogging();
-services.AddApiVersioningService();
+builder.Services.AddHealthChecks();
+builder.Services.AddCustomSwaggerGen();
+builder.Services.AddLogging();
+builder.Services.AddApiVersioningService();
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = 429;

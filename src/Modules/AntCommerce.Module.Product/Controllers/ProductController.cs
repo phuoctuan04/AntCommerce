@@ -1,11 +1,14 @@
 ﻿namespace AntCommerce.Module.Product.Controllers
 {
+    using System.Text;
+    using AntCommerce.Module.Core.Cache;
     using AntCommerce.Module.Product.Commands;
     using AntCommerce.Module.Product.DTOs;
     using AntCommerce.Module.Product.Services;
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
 
     [Route("api/product")]
@@ -14,32 +17,57 @@
     [ApiVersion("1.0")]
     public class ProductController : ControllerBase
     {
-       private readonly IProductQueryService _productQueryService;
-       private readonly IProductCommandService _productCommandService;
-       private readonly IMediator _mediator;
-       
-       private readonly IHttpContextAccessor _httpContextAccessor;
-       private readonly ILogger _logger;
+        private readonly IProductQueryService _productQueryService;
+        private readonly IProductCommandService _productCommandService;
+        private readonly IMediator _mediator;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ILogger _logger;
+
+        private readonly IDistributedCache _cache;
 
         public ProductController(IProductQueryService productQueryService,
             IProductCommandService productCommandService,
             IMediator mediator,
             IHttpContextAccessor httpContextAccessor,
-            ILogger<ProductController> logger)
-       {
-           _productQueryService = productQueryService;
-           _productCommandService = productCommandService;
+            ILogger<ProductController> logger,
+            IDistributedCache cache)
+        {
+            _productQueryService = productQueryService;
+            _productCommandService = productCommandService;
             _mediator = mediator;
-           _httpContextAccessor= httpContextAccessor;
-           _logger = logger;
-       }
+            _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
+            _cache = cache;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            _logger.LogInformation("Get all data");
-            var data = await _productQueryService.FindAllAsync();
-            return Ok(data);
+            var dataCached = await _cache.GetAsync<IReadOnlyCollection<ProductModel>>("Products");
+            if (dataCached is not null)
+            {
+                _logger.LogInformation($"Data Cached {dataCached?.Count}");
+                return Ok(dataCached);
+            }
+            else
+            {
+                var data = new List<ProductModel>() {
+                new ProductModel {
+                    Id= 1,
+                    Name = "IPhone 14"
+                }
+              };
+
+                var options = new DistributedCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+                await _cache.SetAsync("Products", data, options);
+
+                return Ok(data);
+            }
+
+            // _logger.LogInformation("Get all data");
+            // var data = await _productQueryService.FindAllAsync();
+            // return Ok(data);
         }
 
         [HttpGet]
