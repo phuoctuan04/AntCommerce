@@ -31,17 +31,25 @@ jobs:
         with:
           working-directory: 'src'
           filters: |
-            src:
-              - 'src/**'
+            product_api:
+              - 'src/Modules/AntCommerce.Module.Product/**'
+            order_api:
+              - 'src/Modules/AntCommerce.Module.Product/**'
       - name: Install dependencies
         working-directory: src
         if: steps.changes.outputs.src == 'true'
         run: dotnet restore
       
-      - name: Build
-        working-directory: src/WebHost
-        if: steps.changes.outputs.src == 'true'
+      - name: Build Product API
+        working-directory: src/Modules/AntCommerce.Module.Product
+        if: steps.changes.outputs.product_api == 'true'
         run: dotnet build --configuration Release --no-restore
+      
+      - name: Build Order API
+        working-directory: src/Modules/AntCommerce.Module.Order
+        if: steps.changes.outputs.order_api == 'true'
+        run: dotnet build --configuration Release --no-restore
+  
   tests:
     runs-on: ubuntu-latest
     strategy:
