@@ -43,19 +43,21 @@ builder.Services.AddRateLimiter(options =>
             }));
 });
 builder.Services.AddProblemDetails();
+builder.Services.AddApiVersioningService();
+
 // Configure logging
 // https://www.meziantou.net/monitoring-a-dotnet-application-using-opentelemetry.htm
 
 builder.Logging.AddOpenTelemetry(builder =>
 {
-     
+
     builder.IncludeFormattedMessage = true;
     builder.IncludeScopes = true;
     builder.ParseStateValues = true;
     // builder.AddOtlpExporter(options => options.Endpoint = new Uri("http://localhost:4317"));
 });
 
-builder.Host.UseSerilog((context, loggerConfig) 
+builder.Host.UseSerilog((context, loggerConfig)
     => loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();

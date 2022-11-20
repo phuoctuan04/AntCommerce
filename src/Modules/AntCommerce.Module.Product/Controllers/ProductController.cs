@@ -11,6 +11,7 @@
     [Route("api/product")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class ProductController : ControllerBase
     {
        private readonly IProductQueryService _productQueryService;

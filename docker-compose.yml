@@ -55,7 +55,8 @@ services:
       - ant-network
   product_api:
     build:
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Modules/AntCommerce.Module.Product/Dockerfile
     image: tuanitpro/product_api
     container_name: product_api
     depends_on:

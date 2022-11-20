@@ -12,13 +12,15 @@ namespace AntCommerce.Module.Order.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class OrderController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        
-        public OrderController( ILogger<OrderController> logger, 
-            IHttpContextAccessor httpContextAccessor) {
+
+        public OrderController(ILogger<OrderController> logger,
+            IHttpContextAccessor httpContextAccessor)
+        {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
         }
