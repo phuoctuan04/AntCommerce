@@ -7,12 +7,14 @@ namespace AntCommerce.Module.Core.Cache
     {
         public static async Task<T?> GetAsync<T>(this IDistributedCache distributedCache, string key, CancellationToken token = default(CancellationToken)) where T : class
         {
-            var result = await distributedCache.GetAsync(key, token);
-            if (result is null) return default(T);
-
-            var item = System.Text.Json.JsonSerializer.Deserialize<T>(result);
-            if (item is null) return default(T);
-            return item;
+            byte[]? bytes = await distributedCache.GetAsync(key, token);
+            if (bytes is { Length: > 0 })
+            {
+                var item = System.Text.Json.JsonSerializer.Deserialize<T>(bytes);
+                if (item is null) return default(T);
+                return item;
+            }
+            return default(T);
         }
 
         public static async Task SetAsync(this IDistributedCache distributedCache, string key, object data, DistributedCacheEntryOptions options, CancellationToken token = default(CancellationToken))

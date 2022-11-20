@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,8 @@ builder.WebHost.UseKestrel().ConfigureKestrel((context, options) =>
 
 builder.Services.AddProblemDetails();
 
+builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+
 // var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -36,7 +39,6 @@ builder.Services.AddDbContextPool<ProductDbContext>(options =>
     options.UseSqlServer(connectionString,
         sqlServerOptionsAction: sqlOptions =>
         {
-
             //Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
             sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
         });

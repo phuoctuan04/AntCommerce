@@ -1,11 +1,11 @@
 ﻿namespace AntCommerce.Module.Product.Controllers
 {
-    using System.Text;
     using AntCommerce.Module.Core.Cache;
     using AntCommerce.Module.Product.Commands;
     using AntCommerce.Module.Product.DTOs;
     using AntCommerce.Module.Product.Services;
     using MediatR;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Distributed;
@@ -15,6 +15,7 @@
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductQueryService _productQueryService;

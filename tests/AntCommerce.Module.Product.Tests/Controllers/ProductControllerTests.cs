@@ -11,6 +11,8 @@
     using Microsoft.Extensions.Logging;
     using NSubstitute;
     using Xunit;
+    using AntCommerce.Module.Core.Cache;
+    using Microsoft.Extensions.Caching.Distributed;
 
     public class ProductControllerTests
     {
@@ -21,6 +23,8 @@
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<ProductController> _logger;
 
+        private readonly IDistributedCache _cache;
+
         public ProductControllerTests()
         {
             _productQueryService = Substitute.For<IProductQueryService>();
@@ -28,7 +32,7 @@
             _mediator = Substitute.For<IMediator>();
             _httpContextAccessor = Substitute.For<HttpContextAccessor>();
             _logger = Substitute.For<ILogger<ProductController>>();
-
+            _cache = Substitute.For<IDistributedCache>();
             var context = new DefaultHttpContext
             {
                 Connection =
@@ -41,7 +45,7 @@
                 HttpContext = context
             };
             _controller = new ProductController(_productQueryService, _productCommandService, _mediator,
-                _httpContextAccessor, _logger)
+                _httpContextAccessor, _logger, _cache)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -58,6 +62,8 @@
                 new ProductModel() { SKU = "111", Name = "IPhone", Price = 666, Id = 1 },
             };
 
+            _cache.GetAsync<IReadOnlyCollection<ProductModel>>(Arg.Compat.Any<string>(), Arg.Compat.Any<CancellationToken>()).Returns(x=>productModesl);
+            _cache.SetAsync(Arg.Compat.Any<string>(), Arg.Compat.Any<byte[]>(), Arg.Compat.Any<DistributedCacheEntryOptions>());
             _productQueryService.FindAllAsync().Returns(productModesl);
             var actual = await _controller.Get();
             Assert.IsType<OkObjectResult>(actual);
@@ -120,11 +126,11 @@
         [Fact]
         public async Task Post_WhenCalled_ReturnBadRequest()
         {
-           
-          
+
+
             var actual = await _controller.Post(new ProductModel()
             {
-                 SKU = "111",
+                SKU = "111",
             });
             Assert.IsType<BadRequestObjectResult>(actual);
         }
