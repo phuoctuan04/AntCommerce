@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AntCommerce.Module.Order.Controllers
 {
@@ -13,6 +7,7 @@ namespace AntCommerce.Module.Order.Controllers
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly ILogger _logger;

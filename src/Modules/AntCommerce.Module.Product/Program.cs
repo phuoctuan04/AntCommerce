@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +95,34 @@ builder.Services.AddRateLimiter(options =>
                 Window = TimeSpan.FromMinutes(1)
             }));
 });
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+    });
+    // x.AddConsumer<SubmitOrderConsumer>(typeof(SubmitOrderConsumerDefinition));
+});
+
+builder.Services.AddOptions<MassTransitHostOptions>()
+                .Configure(options =>
+                {
+                    // if specified, waits until the bus is started before
+                    // returning from IHostedService.StartAsync
+                    // default is false
+                    options.WaitUntilStarted = true;
+
+                    // if specified, limits the wait time when starting the bus
+                    options.StartTimeout = TimeSpan.FromSeconds(10);
+
+                    // if specified, limits the wait time when stopping the bus
+                    options.StopTimeout = TimeSpan.FromSeconds(30);
+                });
+
 
 builder.Host.UseSerilog((context, loggerConfig)
     => loggerConfig.ReadFrom.Configuration(context.Configuration));

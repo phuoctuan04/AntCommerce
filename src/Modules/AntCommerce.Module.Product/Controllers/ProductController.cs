@@ -44,31 +44,31 @@
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var dataCached = await _cache.GetAsync<IReadOnlyCollection<ProductModel>>("Products");
-            if (dataCached is not null)
-            {
-                _logger.LogInformation($"Data Cached {dataCached?.Count}");
-                return Ok(dataCached);
-            }
-            else
-            {
-                var data = new List<ProductModel>() {
-                new ProductModel {
-                    Id= 1,
-                    Name = "IPhone 14"
-                }
-              };
+            // var dataCached = await _cache.GetAsync<IReadOnlyCollection<ProductModel>>("Products");
+            // if (dataCached is not null)
+            // {
+            //     _logger.LogInformation($"Data Cached {dataCached?.Count}");
+            //     return Ok(dataCached);
+            // }
+            // else
+            // {
+            //     var data = new List<ProductModel>() {
+            //     new ProductModel {
+            //         Id= 1,
+            //         Name = "IPhone 14"
+            //     }
+            //   };
 
-                var options = new DistributedCacheEntryOptions()
-                    .SetSlidingExpiration(TimeSpan.FromMinutes(20));
-                await _cache.SetAsync("Products", data, options);
+            //     var options = new DistributedCacheEntryOptions()
+            //         .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+            //     await _cache.SetAsync("Products", data, options);
 
-                return Ok(data);
-            }
+            //     return Ok(data);
+            // }
 
-            // _logger.LogInformation("Get all data");
-            // var data = await _productQueryService.FindAllAsync();
-            // return Ok(data);
+            _logger.LogInformation("Get all data");
+            var data = await _productQueryService.FindAllAsync();
+            return Ok(data);
         }
 
         [HttpGet]

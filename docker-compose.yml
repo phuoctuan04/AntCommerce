@@ -3,9 +3,9 @@ version: "3.8"
 services:
   sqlserver:
     container_name: sqlserver
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     ports:
-      - 1433:1434
+      - 1433:1433
     networks:
       - ant-network
     environment:
