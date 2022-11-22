@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntCommerce.Module.Core", "Modules\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj", "{F1B5F351-2148-41E2-9BA6-CCD6114F9ED7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Core", "Modules\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj", "{F1B5F351-2148-41E2-9BA6-CCD6114F9ED7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3A6FB346-3F71-4069-9FFA-864116DADE2C}"
 EndProject
@@ -11,15 +11,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BBEA0BB7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{44259274-B4DA-47BF-9D7D-D145FEC66CFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntCommerce.Module.Product", "Modules\AntCommerce.Module.Product\AntCommerce.Module.Product.csproj", "{DFE1044F-D82C-477A-9CF5-811EC59C3CCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Product", "Modules\AntCommerce.Module.Product\AntCommerce.Module.Product.csproj", "{DFE1044F-D82C-477A-9CF5-811EC59C3CCD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Modular", "Modules\AntCommerce.Module.Modular\AntCommerce.Module.Modular.csproj", "{653E9811-2F68-40B8-9B0B-5B5C3AA7196F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntCommerce.Module.Product.Tests", "..\tests\AntCommerce.Module.Product.Tests\AntCommerce.Module.Product.Tests.csproj", "{BA02F493-7960-45B5-BC78-29177301EAE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Product.Tests", "..\tests\AntCommerce.Module.Product.Tests\AntCommerce.Module.Product.Tests.csproj", "{BA02F493-7960-45B5-BC78-29177301EAE9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{4060A525-00D3-40DC-B68F-9CCC9B8550DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Order", "Modules\AntCommerce.Module.Order\AntCommerce.Module.Order.csproj", "{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntCommerce.Module.Order", "Modules\AntCommerce.Module.Order\AntCommerce.Module.Order.csproj", "{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Message", "Modules\AntCommerce.Module.Message\AntCommerce.Module.Message.csproj", "{7630DD89-8382-4307-8697-C91882632612}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntCommerce.Module.Web", "Modules\AntCommerce.Module.Web\AntCommerce.Module.Web.csproj", "{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProxyReverse", "Proxy\ProxyReverse\ProxyReverse.csproj", "{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{68CAFD88-7455-40C8-842A-F708E44BAA58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +53,18 @@ Global
 		{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7630DD89-8382-4307-8697-C91882632612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7630DD89-8382-4307-8697-C91882632612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7630DD89-8382-4307-8697-C91882632612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7630DD89-8382-4307-8697-C91882632612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,7 +75,11 @@ Global
 		{DFE1044F-D82C-477A-9CF5-811EC59C3CCD} = {3A6FB346-3F71-4069-9FFA-864116DADE2C}
 		{653E9811-2F68-40B8-9B0B-5B5C3AA7196F} = {3A6FB346-3F71-4069-9FFA-864116DADE2C}
 		{BA02F493-7960-45B5-BC78-29177301EAE9} = {BBEA0BB7-254A-4E0C-9278-44F7067FCFE4}
-		{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379} = {4060A525-00D3-40DC-B68F-9CCC9B8550DF}
+		{CA1D7282-2D7F-4AD6-9E48-3FDF01E28379} = {3A6FB346-3F71-4069-9FFA-864116DADE2C}
+		{7630DD89-8382-4307-8697-C91882632612} = {3A6FB346-3F71-4069-9FFA-864116DADE2C}
+		{11C7ED70-7F9C-428C-B7BE-A1EEAAE99808} = {3A6FB346-3F71-4069-9FFA-864116DADE2C}
+		{A1BEC17B-B2A3-4501-BEBC-E7ACA62400FA} = {68CAFD88-7455-40C8-842A-F708E44BAA58}
+		{68CAFD88-7455-40C8-842A-F708E44BAA58} = {44259274-B4DA-47BF-9D7D-D145FEC66CFC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1B13CB0-8B54-4F62-B488-E46982584912}

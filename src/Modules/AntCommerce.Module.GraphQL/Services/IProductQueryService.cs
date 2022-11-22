@@ -1,9 +1,9 @@
-namespace AntCommerce.Module.Product.Services
+namespace AntCommerce.Module.GraphQL.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AntCommerce.Module.Core;
-    using AntCommerce.Module.Product.DTOs;
+    using AntCommerce.Module.GraphQL.DTOs;
 
     public interface IProductQueryService
     {

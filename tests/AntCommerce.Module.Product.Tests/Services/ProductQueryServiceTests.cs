@@ -89,7 +89,7 @@
                 Limit = 2,
                 Name = "IPhone"
             };
-            
+
             // Actual
             var actual = await _productQueryService.SearchAsync(productQueryModel, new CancellationToken());
 

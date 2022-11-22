@@ -1,4 +1,4 @@
-﻿namespace AntCommerce.Module.Product.DTOs
+﻿namespace AntCommerce.Module.GraphQL.DTOs
 {
     public class ProductQueryModel
     {

@@ -1,13 +1,9 @@
 using System.IO.Compression;
 using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using AntCommerce.Module.Web.Middlewares;
-using Serilog;
-using Serilog.Exceptions;
-using Serilog.Sinks.Seq;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MassTransit;
+using Microsoft.AspNetCore.ResponseCompression;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -102,7 +98,6 @@ builder.Services.AddOptions<MassTransitHostOptions>()
 
 builder.Logging.AddOpenTelemetry(builder =>
 {
-
     builder.IncludeFormattedMessage = true;
     builder.IncludeScopes = true;
     builder.ParseStateValues = true;

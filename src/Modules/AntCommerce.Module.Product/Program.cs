@@ -6,12 +6,12 @@ using AntCommerce.Module.Product.Contexts;
 using AntCommerce.Module.Product.Events;
 using AntCommerce.Module.Product.Services;
 using AntCommerce.Module.Web.Middlewares;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Serilog;
 using Microsoft.EntityFrameworkCore;
-using MassTransit;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,6 @@ builder.WebHost.UseKestrel().ConfigureKestrel((context, options) =>
     });
     options.AddServerHeader = false;
 });
-
 
 builder.Services.AddProblemDetails();
 
@@ -122,7 +121,6 @@ builder.Services.AddOptions<MassTransitHostOptions>()
                     // if specified, limits the wait time when stopping the bus
                     options.StopTimeout = TimeSpan.FromSeconds(30);
                 });
-
 
 builder.Host.UseSerilog((context, loggerConfig)
     => loggerConfig.ReadFrom.Configuration(context.Configuration));

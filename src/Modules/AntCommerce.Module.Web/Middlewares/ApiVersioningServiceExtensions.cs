@@ -1,9 +1,8 @@
 ﻿namespace AntCommerce.Module.Web.Middlewares
 {
-    using System;
-    using System.Collections.Generic;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.AspNetCore.Mvc.Versioning;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static partial class ApiVersioningServiceExtensions
     {
         public static IServiceCollection AddApiVersioningService(this IServiceCollection services)
@@ -17,7 +16,6 @@
                     new QueryStringApiVersionReader("api-version"),
                     new HeaderApiVersionReader("X-Version"),
                     new MediaTypeApiVersionReader("ver"));
-
             });
 
             return services;

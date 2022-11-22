@@ -34,7 +34,6 @@
             var mockDbSet = productData.AsQueryable().BuildMockDbSet();
             _dbContext.Set<DbProduct>().Returns(mockDbSet);
 
-
             _productCommandService = new ProductCommandService(_dbContext, _logger);
         }
 
@@ -65,7 +64,6 @@
 
             Assert.Equal(1, actual.Id);
             Assert.Equal("IPhone_new", actual.Name);
-
         }
 
         [Fact]
@@ -80,7 +78,7 @@
 
             // Assert
 
-             Assert.Equal(1, actual);
+            Assert.Equal(1, actual);
         }
 
         [Fact]

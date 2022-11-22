@@ -1,4 +1,4 @@
-﻿namespace AntCommerce.Module.Product.Contexts.Models
+﻿namespace AntCommerce.Module.GraphQL.Contexts.Models
 {
     public class Product
     {
@@ -14,7 +14,7 @@
 
         public DateTime CreateAt { get; set; } = DateTime.UtcNow;
 
-        public DateTime? UpdateAt { get; set; }
+        public DateTime? UpdateAt { get; set;}
 
         public string? CreatedBy { get; set; }
 

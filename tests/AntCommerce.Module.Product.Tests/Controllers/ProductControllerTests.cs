@@ -2,17 +2,17 @@
 {
     using System.Threading.Tasks;
     using AntCommerce.Module.Core;
+    using AntCommerce.Module.Core.Cache;
     using AntCommerce.Module.Product.Controllers;
     using AntCommerce.Module.Product.DTOs;
     using AntCommerce.Module.Product.Services;
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using NSubstitute;
     using Xunit;
-    using AntCommerce.Module.Core.Cache;
-    using Microsoft.Extensions.Caching.Distributed;
 
     public class ProductControllerTests
     {
@@ -62,7 +62,7 @@
                 new ProductModel() { SKU = "111", Name = "IPhone", Price = 666, Id = 1 },
             };
 
-            _cache.GetAsync<IReadOnlyCollection<ProductModel>>(Arg.Compat.Any<string>(), Arg.Compat.Any<CancellationToken>()).Returns(x=>productModesl);
+            _cache.GetAsync<IReadOnlyCollection<ProductModel>>(Arg.Compat.Any<string>(), Arg.Compat.Any<CancellationToken>()).Returns(x => productModesl);
             _cache.SetAsync(Arg.Compat.Any<string>(), Arg.Compat.Any<byte[]>(), Arg.Compat.Any<DistributedCacheEntryOptions>());
             _productQueryService.FindAllAsync().Returns(productModesl);
             var actual = await _controller.Get();
@@ -126,8 +126,6 @@
         [Fact]
         public async Task Post_WhenCalled_ReturnBadRequest()
         {
-
-
             var actual = await _controller.Post(new ProductModel()
             {
                 SKU = "111",
@@ -204,7 +202,6 @@
             });
             Assert.IsType<OkObjectResult>(actual);
         }
-
 
         [Fact]
         public async Task Delete_WhenCalled_ReturnNotFound()

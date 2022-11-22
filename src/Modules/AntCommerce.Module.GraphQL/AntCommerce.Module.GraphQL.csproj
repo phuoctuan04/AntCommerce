@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="GraphQL" Version="5.2.0" />
+    <PackageReference Include="GraphQL.Client" Version="4.0.2" />
+	<PackageReference Include="GraphQl.AspNetCore" Version="1.1.4" />
+	<PackageReference Include="HotChocolate.AspNetCore" Version="12.9.0" />
+	<PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
+	<PackageReference Include="HotChocolate.Types" Version="12.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj" />
+    <ProjectReference Include="..\AntCommerce.Module.Modular\AntCommerce.Module.Modular.csproj" />
+  </ItemGroup>
+
+</Project>
