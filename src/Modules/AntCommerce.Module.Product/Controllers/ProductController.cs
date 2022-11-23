@@ -1,6 +1,5 @@
 ﻿namespace AntCommerce.Module.Product.Controllers
 {
-    using AntCommerce.Module.Core.Cache;
     using AntCommerce.Module.Product.Commands;
     using AntCommerce.Module.Product.DTOs;
     using AntCommerce.Module.Product.Services;

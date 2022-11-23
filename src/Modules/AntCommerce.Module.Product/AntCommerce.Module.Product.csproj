@@ -36,5 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\AntCommerce.Module.Core\AntCommerce.Module.Core.csproj" />
     <ProjectReference Include="..\AntCommerce.Module.Web\AntCommerce.Module.Web.csproj" />
+	<ProjectReference Include="..\AntCommerce.Module.Message\AntCommerce.Module.Message.csproj" />
   </ItemGroup>
 </Project>

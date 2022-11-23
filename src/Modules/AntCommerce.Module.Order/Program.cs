@@ -1,5 +1,7 @@
 using System.IO.Compression;
 using System.Threading.RateLimiting;
+using AntCommerce.Module.Message.OrderEvent;
+using AntCommerce.Module.Order.Consumers;
 using AntCommerce.Module.Web.Middlewares;
 using MassTransit;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -65,6 +67,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 builder.Services.AddProblemDetails();
 builder.Services.AddAuthentication("Bearer").AddJwtBearer();
 builder.Services.AddApiVersioningService();
+
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
@@ -74,8 +77,10 @@ builder.Services.AddMassTransit(x =>
             h.Username("guest");
             h.Password("guest");
         });
+        cfg.ConfigureEndpoints(context);
     });
-    // x.AddConsumer<SubmitOrderConsumer>(typeof(SubmitOrderConsumerDefinition));
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddConsumer<OrderCreatedConsumer>(typeof(OrderCreatedConsumerDefinition));
 });
 
 builder.Services.AddOptions<MassTransitHostOptions>()

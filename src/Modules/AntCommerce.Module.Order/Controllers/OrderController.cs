@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MassTransit;
+using AntCommerce.Module.Message.OrderEvent;
 
 namespace AntCommerce.Module.Order.Controllers
 {
@@ -7,23 +9,27 @@ namespace AntCommerce.Module.Order.Controllers
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
+    [AllowAnonymous]
     public class OrderController : ControllerBase
     {
         private readonly ILogger _logger;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IPublishEndpoint _publishEndpoint;
 
         public OrderController(ILogger<OrderController> logger,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IPublishEndpoint publishEndpoint)
         {
             _logger = logger;
             _httpContextAccessor = httpContextAccessor;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             _logger.LogInformation("Get all data");
+            await _publishEndpoint.Publish<OrderCreatedEvent>(new { OrderId = 1 });
             return Ok("data");
         }
 

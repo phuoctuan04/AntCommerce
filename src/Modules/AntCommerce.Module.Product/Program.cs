@@ -2,6 +2,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Threading.RateLimiting;
+using AntCommerce.Module.Product.Consumers;
 using AntCommerce.Module.Product.Contexts;
 using AntCommerce.Module.Product.Events;
 using AntCommerce.Module.Product.Services;
@@ -103,8 +104,11 @@ builder.Services.AddMassTransit(x =>
             h.Username("guest");
             h.Password("guest");
         });
+        cfg.ConfigureEndpoints(context);
     });
-    // x.AddConsumer<SubmitOrderConsumer>(typeof(SubmitOrderConsumerDefinition));
+
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddConsumer<InventoryConsumer>(typeof(InventoryConsumerDefinition));
 });
 
 builder.Services.AddOptions<MassTransitHostOptions>()
